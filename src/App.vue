@@ -1,18 +1,7 @@
-<!-- <template>
-  <div class="justify-center flex bg-yellow-300 items-center h-screen">
-    <div class="text-4xl">
-      Hello 👋🏼
-    </div>
-  </div>
-</template>
-<script>
-export default {
-  name: 'App',
-};
-</script> -->
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <va-button icon='clear' class='mr-4' >Clear</va-button>
 </template>
 
 <script>
@@ -25,8 +14,10 @@ export default {
   }
 }
 </script>
-
 <style>
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
