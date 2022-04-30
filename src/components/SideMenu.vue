@@ -3,14 +3,14 @@
     <va-sidebar v-for="item in items" :key="item.id" textColor="dark">
       <va-sidebar-item  class="pl-2">
         <va-sidebar-item-content>
-          <va-sidebar-item-title><span class='text-xl'>Menú</span></va-sidebar-item-title>
+          <va-sidebar-item-title><span class='text-xl'>{{ $t("menu") }}</span></va-sidebar-item-title>
           <va-icon name="close" @click="doClose"/>
         </va-sidebar-item-content>
       </va-sidebar-item>
       <va-sidebar-item v-for="item in items" :key="item.id" class="pl-4 border-b-2" :active="item.id === selected">
        <router-link :to='item.to' @click="doSelect(item.id, item.name)"> 
           <va-sidebar-item-content>
-            <va-sidebar-item-title> {{item.name}} </va-sidebar-item-title>
+            <va-sidebar-item-title> {{ $t(item.name) }} </va-sidebar-item-title>
             <va-icon name="chevron_right" />
           </va-sidebar-item-content>
        </router-link> 
@@ -23,10 +23,12 @@
 
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useI18n } from 'vue-i18n'
 
 export default {
     setup() {
 
+        const { t } = useI18n();
         const store = useStore();
         const selected = computed(()=> store.state.menuSelected);
 
@@ -43,24 +45,24 @@ export default {
         const items = ref([
           {
               id:1,
-              name:'Películas',
+              name:'movies',
               to: '/movies',
               icon:'arrow'
           },
           {
               id:2,
-              name:'Actores',
+              name:'actors',
               to: '/movies',
               icon:'arrow'
           },
           {
               id:3,
-              name:'Compañías',
+              name:'companies',
               to: '/movies',
               icon:'arrow'
           }
         ])
-        return { items, doClose, doSelect, selected }
+        return { items, doClose, doSelect, selected, t }
     },
 }
 </script>

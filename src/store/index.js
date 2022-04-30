@@ -2,7 +2,7 @@ import { createStore } from "vuex";
 
 const store = createStore({
     state:{
-        title:'Web application',
+        title:'appTitle',
         menuVisible: false,
         menuSelected:-1
     },
