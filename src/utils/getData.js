@@ -1,4 +1,3 @@
-
 import { ref } from 'vue'
 
 const getData = () => {
@@ -12,7 +11,7 @@ const getData = () => {
       let retData = await fetch('http://localhost:3000/movies')
 
       if (!retData.ok) {
-        error.value = 'Ha habido un error'
+        error.value = retData.statusText
       }
 
       data.value = await retData.json()

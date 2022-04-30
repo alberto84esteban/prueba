@@ -3,7 +3,6 @@
 </template>
 <script>
 
-import { onMounted } from '@vue/runtime-core';
 // import getData from '../utils/getData'
 
 export default {
