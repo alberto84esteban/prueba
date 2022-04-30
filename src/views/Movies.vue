@@ -28,9 +28,6 @@ export default {
 
         load();
         
-        onMounted(() => {
-            console.log('onMounted!')
-        })
         return { message, data, error }
     }
 }

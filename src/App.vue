@@ -1,20 +1,29 @@
 <template>
   <div>
-    <router-link to="/">Home</router-link>
-    <router-link to="/about">About</router-link>
-    <router-link to="/movies">Movies</router-link>
+    <AppHeader />
+    <SideMenu v-if="showMenu" />
   </div>
-  <router-view />
+  <div class="content-container">
+    <router-view />
+  </div>
 </template>
 
 <script>
-// import SideMenu from './components/SideMenu'
+import { computed, watch } from '@vue/runtime-core'
+import { useStore } from 'vuex'
+import AppHeader from './components/AppHeader'
+import SideMenu from './components/SideMenu'
 
 export default {
   name: 'App',
-  // components: {SideMenu}, 
+  components: { AppHeader, SideMenu },
+
   setup() {
-    
+
+    const store = useStore()
+    const showMenu = computed(() => store.state.menuVisible)
+
+    return { showMenu }
   }
 }
 </script>
@@ -29,6 +38,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

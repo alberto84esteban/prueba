@@ -16,8 +16,6 @@ const getData = () => {
       }
 
       data.value = await retData.json()
-      console.log('data!!', data);
-      console.log('data RAW!!', data.value);
 
     } catch(err) {
       error.value = err.message

@@ -25,8 +25,6 @@ export default {
     // :active="item.active"
     props:[ 'id','title','image','genre'],
     setup() {
-
-        console.log('noImage', noImage)
         return { noImage }
     },
 }
