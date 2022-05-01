@@ -4,7 +4,8 @@ const store = createStore({
     state:{
         title:'appTitle',
         menuVisible: false,
-        menuSelected:-1
+        menuSelected:-1,
+        showMenuButton: true
     },
     getters:{},
     mutations:{
@@ -18,6 +19,10 @@ const store = createStore({
 
         setSelected(state, id) {
             state.menuSelected = id;
+        },
+
+        setShowMenuButton(state, show) {
+            state.showMenuButton = show;
         }
     },
     actions:{

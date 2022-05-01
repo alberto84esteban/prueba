@@ -5,8 +5,8 @@
     <div v-if="error">
       <UserMessage type="danger" :title="$t('errorMsg')" :message="error" :outline="false" />
     </div>
-    <div class="row" v-if='data'>
-        <div class="flex xs12 sm6 md6 lg4 p-[15px]" v-for="movie in data" :key="movie.id">
+    <div class="row" v-if='movies'>
+        <div class="flex xs12 sm6 md6 lg4 p-[15px]" v-for="movie in movies" :key="movie.id">
             <MovieItem :image="movie.poster" :title="movie.title" :id="movie.id" :genre="movie.genre"/>
         </div>
     </div>
@@ -21,12 +21,13 @@
 </template>
 <script>
 
-import getData from '../utils/getData'
+import doRequest from '../utils/doRequest'
 import MovieItem from '../components/MovieItem'
 import LoadingComponent from '../components/LoadingComponent'
 import UserMessage from '../components/UserMessage'
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n'
+import { useStore } from 'vuex'
 
 export default {
     name:'MoviesView',
@@ -35,16 +36,20 @@ export default {
 
         const { t } = useI18n();
         const complete = ref(false)
-        const { data, load, error } = getData()
+        const { data : movies, load, error } = doRequest('movies');
+        const store = useStore();
 
-        load();
+        onMounted(()=> {
 
-        watch(data, (prv) => {
+          store.commit('setShowMenuButton', true)
+          load();
+        })
+
+        watch(movies, () => {
           complete.value = true
-          console.log('watch2!', prv, prv.lenth)
         })
         
-        return { data, error, complete, t  }
+        return { movies, error, complete, t  }
     }
 }
 </script>

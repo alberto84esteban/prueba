@@ -27,9 +27,10 @@ const routes = [
     },
     {
       path: '/movie/:id',
-      name: 'New movies',
+      name: 'Movie detail',
       // Not rendered until is not visited
-      component: () => import('../views/NewMovie.vue')
+      component: () => import('../views/MovieDetail.vue'),
+      props: true
     }
 
 ];

@@ -1,14 +1,14 @@
 import { ref } from 'vue'
 
-const getData = () => {
+const getMovie = () => {
 
   const data = ref(null)
   const error = ref(null)
 
-  const load = async () => {
+  const load = async (id) => {
 
     try {
-      let retData = await fetch('http://localhost:3000/movies')
+      let retData = await fetch(`http://localhost:3000/movies/${id}`)
 
       if (!retData.ok) {
         error.value = retData.statusText
@@ -24,4 +24,4 @@ const getData = () => {
   return {data, error, load}
 }
 
-export default getData;
+export default getMovie;

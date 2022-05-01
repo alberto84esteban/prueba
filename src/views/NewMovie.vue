@@ -3,14 +3,14 @@
 </template>
 <script>
 
-// import getData from '../utils/getData'
+// import doRequest from '../utils/doRequest'
 
 export default {
     name:'MoviesView',
     components:{},
     setup() {
         const message = 'New Movie!';
-        // const {data, load, error} = getData()
+        // const {data, load, error} = doRequest()
 
         // load();
         
