@@ -74,12 +74,6 @@
         </div>
       </div>
       <va-modal v-model="showWindow" :mobile-fullscreen='false' :message="$t('confirmation')" :overlay="true" @ok='handleDelete' />
-
-      <!-- Elemento usado en vez de Toast para mostrar error en el delete del registro-->
-      <!--TODO: Poner el elemento a la altura de la aplicación para poder gestionarlo globalmente con el store -->
-      <va-alert v-model="actionError" color="danger" class="mb-4">
-        {{actionError}}
-      </va-alert>
     </div>
 
   </div>
@@ -107,7 +101,6 @@ export default {
         const company = ref(null);
         const showWindow = ref(false);
         const ready = ref(false);
-        const actionError = ref(null);
         let { data : movie, load : loadMovie, error : movieError } = doRequest(`movies/${props.id}`);
         const store = useStore();
         let duration;
@@ -182,12 +175,7 @@ export default {
         }
 
         const handleAxiosError = (message) => {
-          actionError.value = message
-
-          //Esperamos 5 segundos antes de dejar de mostrar el mensaje
-          setTimeout(() => {
-            actionError.value = null;
-          }, 5000)
+          store.dispatch('setError', message)
         }
 
         // Carga inicial de los datos de la película
@@ -205,7 +193,7 @@ export default {
             loadActors(value.actors);
         });
 
-        return { t, movie, movieError, noImage, timeReadable, actorList, company, handleEdit, showWindow, handleDelete, ready, actionError }
+        return { t, movie, movieError, noImage, timeReadable, actorList, company, handleEdit, showWindow, handleDelete, ready }
     },
 }
 </script>

@@ -2,10 +2,10 @@
     <div v-if='!complete' class="fixed w-full">
       <LoadingComponent />
     </div>
-    <div v-if="error">
+    <div v-else-if="error">
       <UserMessage type="danger" :title="$t('errorMsg')" :message="error" :outline="false" />
     </div>
-    <div class="row" v-if='movies'>
+    <div class="row" v-else-if='movies'>
         <div class="flex xs12 sm6 md6 lg4 p-[15px]" v-for="movie in movies" :key="movie.id">
             <MovieItem :image="movie.poster" :title="movie.title" :id="movie.id" :genre="movie.genre"/>
         </div>
