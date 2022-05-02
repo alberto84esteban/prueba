@@ -84,10 +84,10 @@ import { onMounted, watch, computed, ref } from 'vue'
 import { useStore } from 'vuex';
 import axios from 'axios'
 import { useI18n } from 'vue-i18n'
-import doRequest from '../utils/doRequest'
-import noImage from '../assets/noImage.png'
-import LoadingComponent from '../components/LoadingComponent'
-import UserMessage from '../components/UserMessage'
+import doRequest from '../../utils/doRequest'
+import noImage from '../../assets/noImage.png'
+import LoadingComponent from '../../components/LoadingComponent'
+import UserMessage from '../../components/UserMessage'
 import { useRouter } from 'vue-router'
 
 export default {
@@ -157,6 +157,7 @@ export default {
         };
 
         const handleEdit = async () => {
+          router.push(`/movies/edit/${props.id}`)
         };
 
         const handleDelete = async () => {

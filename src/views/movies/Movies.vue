@@ -21,10 +21,10 @@
 </template>
 <script>
 
-import doRequest from '../utils/doRequest'
-import MovieItem from '../components/MovieItem'
-import LoadingComponent from '../components/LoadingComponent'
-import UserMessage from '../components/UserMessage'
+import doRequest from '../../utils/doRequest'
+import MovieItem from '../../components/MovieItem'
+import LoadingComponent from '../../components/LoadingComponent'
+import UserMessage from '../../components/UserMessage'
 import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
