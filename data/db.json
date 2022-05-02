@@ -323,6 +323,37 @@
       "movies": [
         4
       ]
+    },
+    {
+      "title": "second film",
+      "poster": "second poster!",
+      "genre": [
+        "a",
+        "bb",
+        "ccc",
+        "dddd"
+      ],
+      "year": "2022",
+      "duration": "94",
+      "imdbRating": "3.0",
+      "actors": [
+        "Lew Meehan"
+      ],
+      "id": 11
+    },
+    {
+      "title": "third film!",
+      "poster": "poooster!",
+      "genre": [
+        "test!"
+      ],
+      "year": "2022",
+      "duration": "55",
+      "imdbRating": "9.8",
+      "actors": [
+        "Rory Chanders"
+      ],
+      "id": 12
     }
   ],
   "companies": [
@@ -335,7 +366,9 @@
       "rating": 4.32,
       "movies": [
         1,
-        10
+        10,
+        11,
+        12
       ]
     },
     {

@@ -7,6 +7,7 @@ const store = createStore({
     menuSelected: -1,
     showMenuButton: true,
     error: null,
+    loading: false
   },
   getters: {},
   mutations: {
@@ -28,6 +29,10 @@ const store = createStore({
 
     setError(state, error) {
       state.error = error;
+    },
+
+    setLoading(state, value) {
+      state.loading = value;
     }
   },
   actions: {

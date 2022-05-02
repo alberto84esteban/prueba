@@ -13,6 +13,9 @@
       <span class="w-full text-center"> {{ error }} </span>
     </va-alert>
   </div>
+  <div v-if='loading' class="fixed w-full">
+    <LoadingComponent />
+  </div>
 </template>
 
 <script>
@@ -20,18 +23,20 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 import AppHeader from './components/AppHeader'
 import SideMenu from './components/SideMenu'
+import LoadingComponent from './components/LoadingComponent'
 
 export default {
   name: 'App',
-  components: { AppHeader, SideMenu },
+  components: { AppHeader, SideMenu, LoadingComponent },
 
   setup() {
 
     const store = useStore()
     const showMenu = computed(() => store.state.menuVisible)
     const error = computed(() => store.state.error)
-
-    return { showMenu, error }
+    const loading = computed(() => store.state.loading)
+    
+    return { showMenu, error, loading }
   }
 }
 </script>

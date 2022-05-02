@@ -21,16 +21,15 @@ const routes = [
   },
   {
     path: '/movies/new',
-    name: 'New movies',
+    name: 'New movie',
     // Not rendered until is not visited
-    component: () => import('../views/movies/FormMovie.vue'),
-    props: true
+    component: () => import('../views/movies/NewMovie.vue')
   },
   {
     path: '/movies/edit/:id',
     name: 'New movies',
     // Not rendered until is not visited
-    component: () => import('../views/movies/FormMovie.vue'),
+    component: () => import('../views/movies/EditMovie.vue'),
     props: true
   },
   {

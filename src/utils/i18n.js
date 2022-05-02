@@ -15,7 +15,13 @@ const messages = {
     genres: 'Genres',
     title: 'Title',
     poster: 'Poster (url)',
-    confirmation: 'Are you sure to delete the movie?'
+    confirmation: 'Are you sure to delete the movie?',
+    add_genre: 'Add a genre',
+    year:'Year',
+    select_actor: 'Select an actor',
+    select_company: 'Select a compamy',
+    new_movie: 'New movie',
+    add: 'Add movie'
 
   },
 
@@ -34,7 +40,13 @@ const messages = {
     genres: 'Géneros',
     title: 'Título',
     poster: 'Póster (url)',
-    confirmation: '¿Está seguro de eliminar la película?'
+    confirmation: '¿Está seguro de eliminar la película?',
+    add_genre: 'Añade un género',
+    year: 'Año',
+    select_actor: 'Selecciona un actor',
+    select_company: 'Selecciona un estudio',
+    new_movie: 'Nueva película',
+    add: 'Añadir película'
   }
 };
 const i18n = createI18n({

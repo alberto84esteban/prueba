@@ -40,7 +40,7 @@ export default {
         const store = useStore();
 
         onMounted(()=> {
-
+          store.commit('changeTitle', t('movies'));
           store.commit('setShowMenuButton', true)
           load();
         })

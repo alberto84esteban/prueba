@@ -14,7 +14,7 @@ const doRequest = (path/*, params*/) => {
 
       console.log('get movie with axios!')
       //let rawData = await fetch(`http://localhost:3000/${path}`)
-      let raw = await axios.get(`http://localhost:3000/dd${path}`)
+      let raw = await axios.get(`http://localhost:3000/${path}`)
 
       //data.value = await raw.json()
       data.value = await raw.data;
