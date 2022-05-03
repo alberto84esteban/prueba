@@ -141,7 +141,7 @@
       </div>
     </div>
     <div class="w-full text-center mt-[15px]">
-      <va-button :disabled="disabled" class="flex-none" icon-right="add" :rounded="false" @click="handleInsert" >{{$t('add')}}</va-button>
+      <va-button :disabled="disabled || title == '' || title == null" class="flex-none" icon-right="add" :rounded="false" @click="handleInsert" >{{$t('add')}}</va-button>
     </div>
   </div>
 </template>
@@ -250,6 +250,7 @@ export default {
      */
     const handleInsert = async () => {
 
+      if (!title.value) return;
       // Deshabilitamos el botón de añadir película para evitar que se hagan más peticiones mientras se gestiona esta
       disabled.value = true;
 

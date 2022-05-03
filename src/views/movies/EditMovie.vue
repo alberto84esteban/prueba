@@ -206,6 +206,7 @@ export default {
      * Carga de los actores
      */
     const loadActors = async () => {
+
       const raw = await axios.get(`http://localhost:3000/actors`);
 
       // Montamos el selector solo con el nombre y apellido de los actores devueltos por la petición
@@ -213,6 +214,8 @@ export default {
         actors.value.push({ value : element.id, text: `${element.first_name} ${element.last_name}`});
       });
       actorsReady = true;
+
+      console.log('ACTORS!')
     }
 
     /**
@@ -225,8 +228,13 @@ export default {
       companiesData = raw.data;
 
       // Montamos el selector solo con el nombre y de los estudios devueltos por la petición
+      //aprovechamos para ver a qué estudio pertenece la película
       raw.data?.forEach(element => {
-        companies.value.push(`${element.name}`)
+        companies.value.push(`${element.name}`);
+
+        if (element.movies.includes(parseInt(props.id))) {
+          company.value = element.name
+        }
       });
     }
 
@@ -282,42 +290,34 @@ export default {
       }
 
       const response = await axios.put(`http://localhost:3000/movies/${props.id}`, movie);
-      console.log('response', response)
-      console.log('router', router)
-      console.log('companieDAta', companiesData)
 
       if (response.status == 201) {
-        store.commit('setLoading', false);
-        router.push(`/movie/${props.id}`);
 
-        // Actualizar datos de estudio si han cambiado
-      }
-      // Si la petición se ha realizado correctamente, procedemos a actualizar los estudios
-   /*   if (response.status == 201) {
-        // Id de la nueva pelíucla creada
-        const newId = response.data.id
+        // Miramos a ver si se ha modificado el estudio
+        if (company.value) {
 
-        // Datos de la compañía de la nueva película
-        const target = companiesData.find(element => element.name == company.value);
+          const companyInfo = companiesData.find(comp => comp.name == company.value);
+          if (!companyInfo.movies.includes(parseInt(props.id))) {
 
-        // Id de la compañía de la película. Usado para el update
-        const compId = target.id
+            // Datos de la compañía de la nueva película
+            companyInfo.movies.push(props.id);
+            const updResponse = await axios.put(`http://localhost:3000/companies/${companyInfo.id}`, companyInfo);
 
-        // Añadimos a la estructura de películas de la compañía, la nueva película creada
-        target.movies.push(newId)
-
-        const updResponse = await axios.put(`http://localhost:3000/companies/${compId}`, target);
-
-        // Una vez actualizado el valor, volvemos a habilitar el botón
-        disabled.value = false;
-
-        // Si la actualización se ha realizado correctamente, volvemos a la pantalla anterior
-        if (updResponse.status == 200) {
-          store.commit('setLoading', false);
-          router.push("/movies/")
+            if (updResponse.status == 200) {
+              store.commit('setLoading', false);
+              router.push(`/movie/${props.id}`)
+            }
+          } 
         }
-      } */
+      }
     }
+
+    watch(actors, (value) => {
+      console.log('actors!!!!! ok', value)
+    })
+    watch(companies, (value) => {
+      console.log('companies!!!!! ok', value)
+    })
 
     watch(movie, (value) => {
       console.log("!!movie loaded!!", value.actors, actorsReady)
@@ -334,18 +334,10 @@ export default {
       // Si ya hemos cargado los actores, procedemos a 'traducir' los que vienen de bd. Aquí solo tenemos ids
       // Lo ideal sería hacer una join en bd y traer ya los datos desde el endopoint. Por ahora, lo tratamos así
       if (actorsReady) {
-        console.log('actors!!!!',actors.value, actorsReady)
+
         value.actors?.forEach(element => {
-          console.log('element!!!!',element)
-
-
-          actors.value.forEach(test => {
-            console.log('TEST! ', test)
-          });
 
           const found = actors.value.find(act => act.value == element);
-
-          console.log('actor found!!!!',found)
 
           // En caso de haber algún actor mal parametrizado, no lo dejaré
           if (found) {
@@ -361,9 +353,6 @@ export default {
       complete.value = true;
     })
 
-    watch(actorsReady, (value) => {
-      console.log('actorsReady!', value)
-    })
     return { t, title, poster, new_genre, genres, actors, actor, removeActor, removeGenre, insertGenre, company, companies, year, duration, imdbRating, handleUpdate, complete, disabled }
   }
 }
