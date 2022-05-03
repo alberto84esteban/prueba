@@ -147,7 +147,7 @@
 </template>
 <script>
 
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
@@ -176,12 +176,18 @@ export default {
     const router = useRouter();
     const disabled = ref(false);
     const complete = ref(false)
-    let actorsReady = false;
+    let actorsReady = ref(false);
+    let companyReady = ref(false);
 
     let { data : movie, load : loadMovie } = doRequest(`movies/${props.id}`);
 
     // Estructura para consultar de forma ràpida las películas del estudio elegido para posterior actualización
-    let companiesData = null
+    let companiesData = null;
+
+    const ready = computed(()=> {
+      console.log('computed!', actorsReady.value, companyReady.value, actorsReady.value && companyReady.value)
+      return actorsReady.value && companyReady.value
+    })
 
     // Carga inicial de los datos de la película
     onMounted(() => {
@@ -198,8 +204,6 @@ export default {
       //Cargamos estudios para mostrar en el selector
       loadCompanies();
 
-      // Cargamos información de la película
-      loadMovie();
     });
 
     /**
@@ -213,9 +217,7 @@ export default {
       raw.data?.forEach(element => {
         actors.value.push({ value : element.id, text: `${element.first_name} ${element.last_name}`});
       });
-      actorsReady = true;
-
-      console.log('ACTORS!')
+      actorsReady.value = true;
     }
 
     /**
@@ -230,12 +232,19 @@ export default {
       // Montamos el selector solo con el nombre y de los estudios devueltos por la petición
       //aprovechamos para ver a qué estudio pertenece la película
       raw.data?.forEach(element => {
-        companies.value.push(`${element.name}`);
+        console.log('element', element)
+        companies.value.push({ value : element.id, text: `${element.name}`});
 
-        if (element.movies.includes(parseInt(props.id))) {
+        console.log('COMPANY', element.movies, element.name)
+
+        if (element.movies?.includes(parseInt(props.id))) {
+          console.log('----inclides', element.name)
           company.value = element.name
         }
       });
+console.log('companyReady',companyReady.value)
+      companyReady.value = true;
+console.log('companyReady2',companyReady.value)
     }
 
     /**
@@ -291,12 +300,12 @@ export default {
 
       const response = await axios.put(`http://localhost:3000/movies/${props.id}`, movie);
 
-      if (response.status == 201) {
+      if (response.status == 200) {
 
         // Miramos a ver si se ha modificado el estudio
         if (company.value) {
-
-          const companyInfo = companiesData.find(comp => comp.name == company.value);
+          console.log('companiesData', companiesData, 'find', company.value)
+          const companyInfo = companiesData.find(comp => comp.name == company.value.text);
           if (!companyInfo.movies.includes(parseInt(props.id))) {
 
             // Datos de la compañía de la nueva película
@@ -312,28 +321,21 @@ export default {
       }
     }
 
-    watch(actors, (value) => {
-      console.log('actors!!!!! ok', value)
-    })
-    watch(companies, (value) => {
-      console.log('companies!!!!! ok', value)
-    })
-
     watch(movie, (value) => {
-      console.log("!!movie loaded!!", value.actors, actorsReady)
+
       // Cuando cargamos los 
       title.value = value.title;
       poster.value = value.poster;
       genres.value = value.genre;
       // actor.value = value.actors;
-      company.value = value.company;
+      // company.value = value.company;
       year.value = value.year;
       duration.value = value.duration;
       imdbRating.value = value.imdbRating;
 
       // Si ya hemos cargado los actores, procedemos a 'traducir' los que vienen de bd. Aquí solo tenemos ids
       // Lo ideal sería hacer una join en bd y traer ya los datos desde el endopoint. Por ahora, lo tratamos así
-      if (actorsReady) {
+      if (actorsReady.value) {
 
         value.actors?.forEach(element => {
 
@@ -345,13 +347,18 @@ export default {
           }
         });
       }
-
+      
       //Cambiamos el título de la cabecera y mostramos el título de nueva película
       store.commit('changeTitle', value.title);
 
       store.commit('setLoading', false);
       complete.value = true;
     })
+
+    watch(ready, () => {
+      // Cargamos información de la película una vez cargados películas y estudios
+      loadMovie();
+    });
 
     return { t, title, poster, new_genre, genres, actors, actor, removeActor, removeGenre, insertGenre, company, companies, year, duration, imdbRating, handleUpdate, complete, disabled }
   }

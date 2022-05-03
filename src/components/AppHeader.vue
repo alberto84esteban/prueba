@@ -32,7 +32,7 @@ export default {
       }
 
       const handleBack = () => {
-        router.push("/movies/")
+        router.back()
       }
 
       return { menu, title, handleClick, t, menuButton, handleBack, router }

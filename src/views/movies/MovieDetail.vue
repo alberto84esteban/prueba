@@ -121,7 +121,7 @@ export default {
         //Cargamos la lista de los nombres de los actores
         const loadActors = async (list) => {
 
-          let query = "?";
+          let query = "";
           for (const key in list) {
             const actor = list[key];
             query += query.length == 0 ? "?" : "&"

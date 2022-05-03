@@ -170,14 +170,17 @@
       ]
     },
     {
-      "id": 11,
-      "title": "Test movie",
-      "poster": "poster.png",
-      "genre": [],
+      "title": "Test movie updated",
+      "poster": "https://dummyimage.com/400x600.png/ff4444/ffffff",
+      "genre": [
+        "test",
+        "test2"
+      ],
+      "year": "2000",
+      "duration": "181",
+      "imdbRating": "6.32",
       "actors": [],
-      "year": 0,
-      "duration": 0,
-      "imdbRating": 0
+      "id": 11
     },
     {
       "id": 12,
@@ -402,7 +405,8 @@
       "rating": 9.26,
       "movies": [
         8,
-        9
+        9,
+        "11"
       ]
     },
     {
