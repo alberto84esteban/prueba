@@ -4,10 +4,12 @@ const store = createStore({
   state: {
     title: 'appTitle',
     menuVisible: false,
-    menuSelected: -1,
+    menuSelected: null,
     showMenuButton: true,
     error: null,
-    loading: false
+    loading: false,
+    showErrorOnWindow: false,
+    showErrorToast: false
   },
   getters: {},
   mutations: {
@@ -33,14 +35,43 @@ const store = createStore({
 
     setLoading(state, value) {
       state.loading = value;
-    }
+    },
+
+    setShowErrorOnWindow(state, value) {
+      state.showErrorOnWindow = value;
+    },
+
+    showErrorToast(state, value) {
+      state.showErrorToast = value;
+    },
   },
   actions: {
-    setError(context, error) {
+    setError(context, error/*, showErrorOnWindow*/) {
+
+      // Informamos del mensaje de error
       context.commit('setError', error)
+
+      // Eliminamos ya el indicativo de carga
+      context.commit('setLoading', false)
+
+      // Mostramos el pop-up con el error
+      context.commit('showErrorToast', true)
+
+      // Hacemos desaparecer la notificación pop-up a los 5 segundos
       setTimeout(() => {
-        context.commit('setError', null)
+        context.commit('showErrorToast', false)
       }, 5000)
+    },
+
+    /**
+     * Eliminamos todos los valores de error/notificación 
+     */
+    cleanMessages(context) {
+      context.commit('setError', null)
+      context.commit('setLoading', false)
+      context.commit('showErrorToast', false)
+      context.commit('setShowErrorOnWindow', false)
+      context.commit('setSelected', null)
     }
   }
 });

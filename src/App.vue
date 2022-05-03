@@ -3,18 +3,23 @@
     <AppHeader />
     <SideMenu v-if="showMenu" />
   </div>
-  <div class="mt-[35px]">
+  <div class="pt-[35px]">
     <router-view />
   </div>
-  <!-- Elemento usado en vez de Toast para mostrar error en el delete del registro-->
-  <!--TODO: Poner el elemento a la altura de la aplicación para poder gestionarlo globalmente con el store -->
+
+  <!-- Sección para mostrar errores al usuario -->
+  <div v-if='loading' class="fixed w-full">
+    <LoadingComponent />
+  </div>
   <div class="absolute z-[150] top-[80vh] w-[100vw] drop-shadow-xl">
-    <va-alert v-model="error" color="danger" class="mb-4 m-auto w-[60vw] h-[55px] drop-shadow-xl">
+    <va-alert v-model="showErrorToast" color="danger" class="mb-4 m-auto w-[60vw] h-[55px] drop-shadow-xl">
       <span class="w-full text-center"> {{ error }} </span>
     </va-alert>
   </div>
-  <div v-if='loading' class="fixed w-full">
-    <LoadingComponent />
+  <div v-if='showError'>
+    <div class="border-1">
+      <UserMessage type="danger" :title="$t('errorMsg')" :message="error" :outline="false" :backHome='true'/>
+    </div> 
   </div>
 </template>
 
@@ -24,19 +29,22 @@ import { useStore } from 'vuex'
 import AppHeader from './components/AppHeader'
 import SideMenu from './components/SideMenu'
 import LoadingComponent from './components/LoadingComponent'
+import UserMessage from './components/UserMessage'
 
 export default {
   name: 'App',
-  components: { AppHeader, SideMenu, LoadingComponent },
+  components: { AppHeader, SideMenu, LoadingComponent, UserMessage },
 
   setup() {
 
     const store = useStore()
     const showMenu = computed(() => store.state.menuVisible)
     const error = computed(() => store.state.error)
-    const loading = computed(() => store.state.loading)
+    const showErrorToast = computed(() => store.state.showErrorToast)
+    const loading = computed(() => store.state.loading );
+    const showError = computed(() => store.state.showErrorOnWindow)
     
-    return { showMenu, error, loading }
+    return { showMenu, error, loading, showError, showErrorToast }
   }
 }
 </script>
