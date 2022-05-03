@@ -53,6 +53,9 @@ export default {
 
           // Indicamos que se ha hecho la carga correctamente y mostramos así la pantalla (haya o no registros)
           complete.value = true;
+
+          // Indicamos que se ha terminado la carga
+          store.commit('setLoading', false);
         })
         
         return { movies, error, complete, t  }

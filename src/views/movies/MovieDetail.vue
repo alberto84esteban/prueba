@@ -1,15 +1,16 @@
 <template>
   <div>
+    <!--
     <div v-if="!ready" class="fixed w-full">
       <LoadingComponent />
     </div>
     <div v-else-if="movieError">
       <UserMessage type="danger" :title="$t('errorMsg')" :message="movieError" :outline="false" />
-    </div>
+    </div> 
     <div v-else-if="!movie">
       <UserMessage type="warning" :message="$t('noDataMessage')" :outline="true" />
-    </div>
-    <div v-else class="w-full pt-[20px] p-2 row">
+    </div> -->
+    <div v-if='movie' class="w-full pt-[20px] p-2 row">
       <div class="flex flex-col xs12 sm12 md6 lg6 mt-3">
         <div class="w-[90%] m-auto">
           <va-image
@@ -86,13 +87,13 @@ import axios from 'axios'
 import { useI18n } from 'vue-i18n'
 import doRequest from '../../utils/doRequest'
 import noImage from '../../assets/noImage.png'
-import LoadingComponent from '../../components/LoadingComponent'
-import UserMessage from '../../components/UserMessage'
+//import LoadingComponent from '../../components/LoadingComponent'
+//import UserMessage from '../../components/UserMessage'
 import { useRouter } from 'vue-router'
 
 export default {
     props: ['id'],
-    components: {LoadingComponent, UserMessage },
+    components: {/*LoadingComponent, UserMessage */ },
     setup(props) {
         
         const { t } = useI18n();

@@ -73,7 +73,7 @@
       </div>
       <div class="block overflow-x-scroll	">
         <va-chip v-for='(act, index) in actor' :key="index" class="w-fit mr-1">
-          {{act}}<va-icon name="close" color="white" size="small" class="ml-2 pointer" @click="removeActor(act)"/>
+          {{ act.text }}<va-icon name="close" color="white" size="small" class="ml-2 pointer" @click="removeActor(act)"/>
         </va-chip>
       </div>
     </div>
@@ -147,13 +147,11 @@
 </template>
 <script>
 
-// import doRequest from '../utils/doRequest'
 import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
-// import doRequest from '../../utils/doRequest'
 
 export default {
   name:'FormMovie',
@@ -202,7 +200,7 @@ export default {
 
       // Montamos el selector solo con el nombre y apellido de los actores devueltos por la petición
       raw.data?.forEach(element => {
-        actors.value.push(`${element.first_name} ${element.last_name}`)
+        actors.value.push({ value : element.id, text: `${element.first_name} ${element.last_name}`})
       });
     }
 
@@ -257,6 +255,10 @@ export default {
 
       store.commit('setLoading', true);
 
+      const actorData = []
+      // Obtenemos los códigos de los actores
+      actor.value.forEach(actor => actorData.push(actor.value));
+
       // Estructura que mandaremos a la bd con la información introducida
       const movie = {
         title : title.value, 
@@ -265,10 +267,10 @@ export default {
         year: year.value, 
         duration: duration.value, 
         imdbRating: imdbRating.value, 
-        actors : actor.value
+        actors : actorData
       }
 
-      const response = await axios.post('http://localhost:3000/actors', movie);
+      const response = await axios.post('http://localhost:3000/movies', movie);
 
       // Si la petición se ha realizado correctamente, procedemos a actualizar los estudios
       if (response.status == 201) {
@@ -297,7 +299,7 @@ export default {
       }
     }
 
-    return { t, title, poster, new_genre, genres, actors, actor, removeActor, removeGenre, insertGenre, company, companies, year, duration, imdbRating, handleInsert }
+    return { t, title, poster, new_genre, genres, actors, actor, removeActor, removeGenre, insertGenre, company, companies, year, duration, imdbRating, handleInsert, disabled }
   }
 }
 </script>

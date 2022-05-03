@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full pt-[20px] p-2 row text-xl">
+  <div v-if='complete' class="w-full pt-[20px] p-2 row text-xl">
 
     <!-- Título -->
     <div class="flex flex-col xs12 sm6 md6 lg6 px-2">
@@ -73,7 +73,7 @@
       </div>
       <div class="block overflow-x-scroll	">
         <va-chip v-for='(act, index) in actor' :key="index" class="w-fit mr-1">
-          {{act}}<va-icon name="close" color="white" size="small" class="ml-2 pointer" @click="removeActor(act)"/>
+          {{ act.text }}<va-icon name="close" color="white" size="small" class="ml-2 pointer" @click="removeActor(act)"/>
         </va-chip>
       </div>
     </div>
@@ -140,28 +140,29 @@
         />
       </div>
     </div>
-
-
+    <div class="w-full text-center mt-[15px]">
+      <va-button :disabled="disabled" class="flex-none" icon-right="done" :rounded="false" @click="handleUpdate" >{{$t('update')}}</va-button>
+    </div>
   </div>
 </template>
 <script>
 
-// import doRequest from '../utils/doRequest'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
-// import doRequest from '../../utils/doRequest'
+import { useRouter } from 'vue-router'
+import doRequest from '../../utils/doRequest'
 
 export default {
   name:'FormMovie',
-  props: ['id'],
+  props:['id'],
   components:{},
 
   setup(props) {
     const { t } = useI18n();
     const store = useStore();
-    const title = ref(null);
+    const title = ref(null);      
     const poster = ref(null);
     const new_genre = ref(null);
     const genres = ref([]);
@@ -172,58 +173,198 @@ export default {
     const year = ref(null);
     const duration = ref(null);
     const imdbRating = ref(null);
+    const router = useRouter();
+    const disabled = ref(false);
+    const complete = ref(false)
+    let actorsReady = false;
 
-    // let { data : movie, load : loadMovie } = doRequest(`movies/${props.id}`);
-    // const {data, load, error} = doRequest()  
+    let { data : movie, load : loadMovie } = doRequest(`movies/${props.id}`);
+
+    // Estructura para consultar de forma ràpida las películas del estudio elegido para posterior actualización
+    let companiesData = null
 
     // Carga inicial de los datos de la película
     onMounted(() => {
+      
+      // Indicamos que se está cargando el componente hasta que tengamos toda la información para mostrar
+      store.commit('setLoading', true);
+
+      // Escondemos el botón de menú de la cabecera y mostramos el de vuelta atrás
       store.commit('setShowMenuButton', false);
-           // store.commit('changeTitle', value.title)
+
+      // Cargamos actores para mostrar en el selector
       loadActors();
+
+      //Cargamos estudios para mostrar en el selector
       loadCompanies();
+
+      // Cargamos información de la película
+      loadMovie();
     });
 
+    /**
+     * Carga de los actores
+     */
     const loadActors = async () => {
       const raw = await axios.get(`http://localhost:3000/actors`);
+
+      // Montamos el selector solo con el nombre y apellido de los actores devueltos por la petición
       raw.data?.forEach(element => {
-        actors.value.push(`${element.first_name} ${element.last_name}`)
+        actors.value.push({ value : element.id, text: `${element.first_name} ${element.last_name}`});
       });
+      actorsReady = true;
     }
 
+    /**
+     * Carga de las compañías
+     */
     const loadCompanies = async () => {
       const raw = await axios.get(`http://localhost:3000/companies`);
-      console.log('raw', raw)
+
+      // Guardamos los datos de los estudios para poder luego actualizar con la película creada
+      companiesData = raw.data;
+
+      // Montamos el selector solo con el nombre y de los estudios devueltos por la petición
       raw.data?.forEach(element => {
-        console.log('element', element)
         companies.value.push(`${element.name}`)
       });
     }
 
+    /**
+     * Eliminamos el género seleccionado desde los 'chips'
+     */
     const removeGenre = (genre) => {
       const index = genres.value.indexOf(genre);
       genres.value.splice(index,1);
     }
 
+    /**
+     * Eliminamos el actor seleccionado desde los 'chips'
+     */
     const removeActor = (act) => {
       const index = actor.value.indexOf(act);
       actor.value.splice(index,1);
     };
 
+    /**
+     * Insertamos un nuevo género cuando damos 'enter' en el input
+     */
     const insertGenre = (evt) => {
-      console.log('genre! ', evt);
       if (evt.keyCode == 13) {
         genres.value.push(new_genre.value)
         new_genre.value = null;
       }
     }
 
-    // loadMovie();
-    //console.log('data!!! ', movie);
+    /**
+     * Gestión del insert de la nueva película
+     */
+    const handleUpdate = async () => {
 
-    // load();
-    console.log('New Movie!', props.id)
-    return { t, title, poster, new_genre, genres, actors, actor, removeActor, removeGenre, insertGenre, company, companies, year, duration, imdbRating }
+      // Deshabilitamos el botón de añadir película para evitar que se hagan más peticiones mientras se gestiona esta
+      disabled.value = true;
+
+      store.commit('setLoading', true);
+
+      const actorData = []
+      // Obtenemos los códigos de los actores
+      actor.value.forEach(actor => actorData.push(actor.value));
+
+      // Estructura que mandaremos a la bd con la información introducida
+      const movie = {
+        title : title.value, 
+        poster: poster.value, 
+        genre : genres.value, 
+        year: year.value, 
+        duration: duration.value, 
+        imdbRating: imdbRating.value, 
+        actors : actorData
+      }
+
+      const response = await axios.put(`http://localhost:3000/movies/${props.id}`, movie);
+      console.log('response', response)
+      console.log('router', router)
+      console.log('companieDAta', companiesData)
+
+      if (response.status == 201) {
+        store.commit('setLoading', false);
+        router.push(`/movie/${props.id}`);
+
+        // Actualizar datos de estudio si han cambiado
+      }
+      // Si la petición se ha realizado correctamente, procedemos a actualizar los estudios
+   /*   if (response.status == 201) {
+        // Id de la nueva pelíucla creada
+        const newId = response.data.id
+
+        // Datos de la compañía de la nueva película
+        const target = companiesData.find(element => element.name == company.value);
+
+        // Id de la compañía de la película. Usado para el update
+        const compId = target.id
+
+        // Añadimos a la estructura de películas de la compañía, la nueva película creada
+        target.movies.push(newId)
+
+        const updResponse = await axios.put(`http://localhost:3000/companies/${compId}`, target);
+
+        // Una vez actualizado el valor, volvemos a habilitar el botón
+        disabled.value = false;
+
+        // Si la actualización se ha realizado correctamente, volvemos a la pantalla anterior
+        if (updResponse.status == 200) {
+          store.commit('setLoading', false);
+          router.push("/movies/")
+        }
+      } */
+    }
+
+    watch(movie, (value) => {
+      console.log("!!movie loaded!!", value.actors, actorsReady)
+      // Cuando cargamos los 
+      title.value = value.title;
+      poster.value = value.poster;
+      genres.value = value.genre;
+      // actor.value = value.actors;
+      company.value = value.company;
+      year.value = value.year;
+      duration.value = value.duration;
+      imdbRating.value = value.imdbRating;
+
+      // Si ya hemos cargado los actores, procedemos a 'traducir' los que vienen de bd. Aquí solo tenemos ids
+      // Lo ideal sería hacer una join en bd y traer ya los datos desde el endopoint. Por ahora, lo tratamos así
+      if (actorsReady) {
+        console.log('actors!!!!',actors.value, actorsReady)
+        value.actors?.forEach(element => {
+          console.log('element!!!!',element)
+
+
+          actors.value.forEach(test => {
+            console.log('TEST! ', test)
+          });
+
+          const found = actors.value.find(act => act.value == element);
+
+          console.log('actor found!!!!',found)
+
+          // En caso de haber algún actor mal parametrizado, no lo dejaré
+          if (found) {
+            actor.value.push({ value : element.id, text: `${found?.text}`});
+          }
+        });
+      }
+
+      //Cambiamos el título de la cabecera y mostramos el título de nueva película
+      store.commit('changeTitle', value.title);
+
+      store.commit('setLoading', false);
+      complete.value = true;
+    })
+
+    watch(actorsReady, (value) => {
+      console.log('actorsReady!', value)
+    })
+    return { t, title, poster, new_genre, genres, actors, actor, removeActor, removeGenre, insertGenre, company, companies, year, duration, imdbRating, handleUpdate, complete, disabled }
   }
 }
 </script>

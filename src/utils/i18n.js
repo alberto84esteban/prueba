@@ -17,11 +17,12 @@ const messages = {
     poster: 'Poster (url)',
     confirmation: 'Are you sure to delete the movie?',
     add_genre: 'Add a genre',
-    year:'Year',
+    year: 'Year',
     select_actor: 'Select an actor',
     select_company: 'Select a compamy',
     new_movie: 'New movie',
-    add: 'Add movie'
+    add: 'Add',
+    update: 'Update'
 
   },
 
@@ -46,7 +47,8 @@ const messages = {
     select_actor: 'Selecciona un actor',
     select_company: 'Selecciona un estudio',
     new_movie: 'Nueva película',
-    add: 'Añadir película'
+    add: 'Añadir',
+    update: 'Actualizar'
   }
 };
 const i18n = createI18n({

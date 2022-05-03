@@ -1,6 +1,24 @@
 {
   "movies": [
     {
+      "id": 1,
+      "title": "Dancing Lady",
+      "poster": "http://dummyimage.com/400x600.png/cc0000/ffffff",
+      "genre": [
+        "Comedy",
+        "Musical",
+        "Romance"
+      ],
+      "year": 2006,
+      "duration": 161,
+      "imdbRating": 8.27,
+      "actors": [
+        4,
+        5,
+        6
+      ]
+    },
+    {
       "id": 2,
       "title": "Mooring, The",
       "poster": "http://dummyimage.com/400x600.png/dddddd/000000",
@@ -152,6 +170,16 @@
       ]
     },
     {
+      "id": 11,
+      "title": "Test movie",
+      "poster": "poster.png",
+      "genre": [],
+      "actors": [],
+      "year": 0,
+      "duration": 0,
+      "imdbRating": 0
+    },
+    {
       "id": 12,
       "title": "Test movie",
       "poster": "poster.png",
@@ -164,18 +192,19 @@
       "imdbRating": 0
     },
     {
-      "id": 13,
-      "title": "Test movie",
-      "poster": "poster.png",
+      "title": "Test movie updated",
+      "poster": "http://dummyimage.com/400x600.png/cc0000/ffffff",
       "genre": [
         "comedy"
       ],
-      "actors": [
-        "Brian Meyers"
-      ],
       "year": "2002",
-      "duration": "12000000",
-      "imdbRating": "10"
+      "duration": "125",
+      "imdbRating": "10",
+      "actors": [
+        null,
+        null
+      ],
+      "id": 13
     }
   ],
   "actors": [
@@ -323,37 +352,6 @@
       "movies": [
         4
       ]
-    },
-    {
-      "title": "second film",
-      "poster": "second poster!",
-      "genre": [
-        "a",
-        "bb",
-        "ccc",
-        "dddd"
-      ],
-      "year": "2022",
-      "duration": "94",
-      "imdbRating": "3.0",
-      "actors": [
-        "Lew Meehan"
-      ],
-      "id": 11
-    },
-    {
-      "title": "third film!",
-      "poster": "poooster!",
-      "genre": [
-        "test!"
-      ],
-      "year": "2022",
-      "duration": "55",
-      "imdbRating": "9.8",
-      "actors": [
-        "Rory Chanders"
-      ],
-      "id": 12
     }
   ],
   "companies": [
@@ -366,9 +364,7 @@
       "rating": 4.32,
       "movies": [
         1,
-        10,
-        11,
-        12
+        10
       ]
     },
     {
