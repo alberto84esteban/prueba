@@ -21,7 +21,7 @@
 </template>
 <script>
 
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useI18n } from 'vue-i18n'
 
@@ -31,6 +31,7 @@ export default {
         const { t } = useI18n();
         const store = useStore();
         const selected = computed(()=> store.state.menuSelected);
+        const items = computed(()=> store.state.menuItems);
 
         const doClose = () => {
           store.commit('changeMenuVisibility', false)
@@ -41,7 +42,7 @@ export default {
           store.commit('changeTitle', name)
           doClose()
         }
-
+        /*
         const items = ref([
           {
               id:1,
@@ -61,7 +62,7 @@ export default {
               to: '/movies',
               icon:'arrow'
           }
-        ])
+        ]) */
         return { items, doClose, doSelect, selected, t }
     },
 }

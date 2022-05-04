@@ -9,7 +9,30 @@ const store = createStore({
     error: null,
     loading: false,
     showErrorOnWindow: false,
-    showErrorToast: false
+    showErrorToast: false,
+
+    // Por si queremos hacerlo dinámico. Se usa en dos puntos, barra lateral y menú principal
+    // Cualquier modificación, solo se deberá hacer aquí.
+    menuItems: [
+      {
+        id: 1,
+        name: 'movies',
+        to: '/movies',
+        icon: 'arrow'
+      },
+      {
+        id: 2,
+        name: 'actors',
+        to: '/movies',
+        icon: 'arrow'
+      },
+      {
+        id: 3,
+        name: 'companies',
+        to: '/movies',
+        icon: 'arrow'
+      }
+    ]
   },
   getters: {},
   mutations: {

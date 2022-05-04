@@ -2,6 +2,7 @@
   <va-app-bar shadow-color='bg-slate-200' class="flex fixed z-[100]">
     <va-button v-if="menuButton" class="flex-none" icon="menu" color="#fff" flat :rounded="false" @click="handleClick" />
     <va-button v-else class="flex-none" icon="chevron_left" color="#fff" flat :rounded="false" @click="handleBack" />
+    <va-button class="flex-none" icon="home" color="#fff" flat :rounded="false" to="/" />
     <div class="flex-1 text-center text-white mr-[36px]">
       <h2>{{ $t(title) }}</h2>
     </div>

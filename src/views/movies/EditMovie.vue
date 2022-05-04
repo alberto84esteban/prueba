@@ -238,13 +238,11 @@ export default {
         console.log('COMPANY', element.movies, element.name)
 
         if (element.movies?.includes(parseInt(props.id))) {
-          console.log('----inclides', element.name)
           company.value = element.name
         }
       });
-console.log('companyReady',companyReady.value)
+
       companyReady.value = true;
-console.log('companyReady2',companyReady.value)
     }
 
     /**
