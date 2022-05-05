@@ -42,27 +42,7 @@ export default {
           store.commit('changeTitle', name)
           doClose()
         }
-        /*
-        const items = ref([
-          {
-              id:1,
-              name:'movies',
-              to: '/movies',
-              icon:'arrow'
-          },
-          {
-              id:2,
-              name:'actors',
-              to: '/movies',
-              icon:'arrow'
-          },
-          {
-              id:3,
-              name:'companies',
-              to: '/movies',
-              icon:'arrow'
-          }
-        ]) */
+        
         return { items, doClose, doSelect, selected, t }
     },
 }

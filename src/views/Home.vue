@@ -1,31 +1,20 @@
 <template>
-    <h1> {{ $t("hello") }}</h1>
-    <div class="row">
-        <va-card v-for="item in items" :key="item.id" class="p-[10px] movie-card-item max-w-full cursor-pointer" :to='item.to'>
-            <va-card-title class="p-1 ml-3 text-xl">{{item.name}}</va-card-title>
-      <!--
+  <div class="row w-full">
+    <div v-for="item in items" :key="item.id" class="flex max-w-full xs12 sm6 md6 lg6">
+    <va-card class="m-[30px] cursor-pointer" :to='item.to'>
+      <va-card-title class="p-1 ml-3 text-xl">{{item.name}}</va-card-title>
+
       <va-image
-        v-if="image"
-        :src="image"
+        :src="item.image"
         style="height: 200px;"
         class="w-[90%] m-auto p-1"
-      /> 
-      <va-image
-        v-else
-        :src="noImage"
-        style="height: 200px;"
-        class="w-[90%] m-auto p-1"
-      /> -->
+      />
       <va-card-content class="w-[90%] pt-2 overflow-x-auto whitespace-nowrap">
         <span class='mr-3' v-for="text in genre" :key="text">#{{item.name}}</span>
       </va-card-content>
-        </va-card>
-<!--
-        <va-card :bordered="true" :outlined="true" class="p-[10px] movie-card-item max-w-full cursor-pointer" @click="handleClick">
-      
     </va-card>
-    -->
-    </div>
+  </div>
+  </div>
 </template>
 <script>
 

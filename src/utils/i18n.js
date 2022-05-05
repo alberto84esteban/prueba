@@ -53,8 +53,8 @@ const messages = {
 };
 const i18n = createI18n({
   legacy: false,
-  locale: 'es',
-  fallbackLocale: 'es',
+  locale: 'en',
+  fallbackLocale: 'en',
   globalInjection: true,
   messages
 })

@@ -18,19 +18,22 @@ const store = createStore({
         id: 1,
         name: 'movies',
         to: '/movies',
-        icon: 'arrow'
+        icon: 'arrow',
+        image: 'https://picsum.photos/id/137/4752/3168'
       },
       {
         id: 2,
         name: 'actors',
         to: '/movies',
-        icon: 'arrow'
+        icon: 'arrow',
+        image: 'https://picsum.photos/id/1004/5616/3744'
       },
       {
         id: 3,
         name: 'companies',
         to: '/movies',
-        icon: 'arrow'
+        icon: 'arrow',
+        image: 'https://picsum.photos/id/1031/5446/3063'
       }
     ]
   },

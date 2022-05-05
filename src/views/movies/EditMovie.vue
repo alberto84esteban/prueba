@@ -185,7 +185,6 @@ export default {
     let companiesData = null;
 
     const ready = computed(()=> {
-      console.log('computed!', actorsReady.value, companyReady.value, actorsReady.value && companyReady.value)
       return actorsReady.value && companyReady.value
     })
 
@@ -232,10 +231,8 @@ export default {
       // Montamos el selector solo con el nombre y de los estudios devueltos por la petición
       //aprovechamos para ver a qué estudio pertenece la película
       raw.data?.forEach(element => {
-        console.log('element', element)
-        companies.value.push({ value : element.id, text: `${element.name}`});
 
-        console.log('COMPANY', element.movies, element.name)
+        companies.value.push({ value : element.id, text: `${element.name}`});
 
         if (element.movies?.includes(parseInt(props.id))) {
           company.value = element.name
@@ -302,7 +299,6 @@ export default {
 
         // Miramos a ver si se ha modificado el estudio
         if (company.value) {
-          console.log('companiesData', companiesData, 'find', company.value)
           const companyInfo = companiesData.find(comp => comp.name == company.value.text);
           if (!companyInfo.movies.includes(parseInt(props.id))) {
 
@@ -320,13 +316,9 @@ export default {
     }
 
     watch(movie, (value) => {
-
-      // Cuando cargamos los 
       title.value = value.title;
       poster.value = value.poster;
       genres.value = value.genre;
-      // actor.value = value.actors;
-      // company.value = value.company;
       year.value = value.year;
       duration.value = value.duration;
       imdbRating.value = value.imdbRating;
@@ -334,7 +326,6 @@ export default {
       // Si ya hemos cargado los actores, procedemos a 'traducir' los que vienen de bd. Aquí solo tenemos ids
       // Lo ideal sería hacer una join en bd y traer ya los datos desde el endopoint. Por ahora, lo tratamos así
       if (actorsReady.value) {
-
         value.actors?.forEach(element => {
 
           const found = actors.value.find(act => act.value == element);
